@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.osvue.security</groupId>
+    <artifactId>five</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>securityFive</name>
+    <description>聚合服务</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>demo1</module>
+        <module>form-login</module>
+        <module>form-login-2</module>
+        <module>form-login-3</module>
+        <module>form-login-4</module>
+        <module>form-login-5</module>
+
+    </modules>
+
+
+
+</project>
