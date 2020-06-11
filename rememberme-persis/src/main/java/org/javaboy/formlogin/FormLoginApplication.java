@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class FormLoginApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         SpringApplication.run(FormLoginApplication.class, args);
     }
-
+//
     @Bean
-    Producer verifyCode() {
+    Producer verifyCode(){
         Properties properties = new Properties();
         properties.setProperty("kaptcha.image.width", "150");
         properties.setProperty("kaptcha.image.height", "50");

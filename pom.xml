@@ -16,6 +16,8 @@
         <module>form-login-3</module>
         <module>form-login-4</module>
         <module>form-login-5</module>
+      <module>oauth</module>
+      <module>auth-redis</module>
 
     </modules>
 
