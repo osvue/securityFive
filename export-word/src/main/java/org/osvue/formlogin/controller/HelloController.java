@@ -1,5 +1,6 @@
 package org.osvue.formlogin.controller;
 
+import com.sun.javafx.collections.MappingChange;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +31,8 @@ public class HelloController {
   public String hello() {
     return "login";
   }
+
+  //  SqlsessionTemplate
 
   /**
    * @Function TODO
@@ -54,13 +58,15 @@ public class HelloController {
     // 第二行 中等标题
     WorderToNewWordUtils.setContent(
         document,
-        "(" + m3.get("START_TIME").toString() + "-" + m3.get("END_TIME") + ")",
+        "(" + m3.get("START_TIME").toString() + ")",
         "宋体",
         18,
         ParagraphAlignment.CENTER,
         false);
     Map<String, Object> map1 = new HashMap<String, Object>();
     // 生成表
+    //    map. content  表格上的内容
+    //    map. tabletitle
     map1.put(
         "content",
         "默认生成的 access_token 其实就是一个 UUID 字符串。\n"
@@ -85,15 +91,46 @@ public class HelloController {
               }
             },
             testList);
-
-    WorderToNewWordUtils.mergeCellsHorizontal(table, 0, 3, 6);
-    WorderToNewWordUtils.mergeCellsHorizontal(table, 0, 7, 10);
-    //        WorderToNewWordUtils.mergeCellsHorizontal(table, 2, 0, 1);
     //
-    //        WorderToNewWordUtils.mergeCellsVertically(table, 0, 0, 1);
-    //        WorderToNewWordUtils.mergeCellsVertically(table, 1, 0, 1);
-    //        WorderToNewWordUtils.mergeCellsVertically(table, 2, 0, 1);
+    //    WorderToNewWordUtils.mergeCellsHorizontal(table, 0, 3, 6);
+    //    WorderToNewWordUtils.mergeCellsHorizontal(table, 0, 7, 10);
+    //            WorderToNewWordUtils.mergeCellsHorizontal(table, 2, 0, 1);
 
+    WorderToNewWordUtils.mergeCellsVertically(table, 0, 0, 1);
+    WorderToNewWordUtils.mergeCellsVertically(table, 1, 0, 1);
+    WorderToNewWordUtils.mergeCellsVertically(table, 2, 0, 1);
+
+    map1.put("tabletilte", "10 千伏业扩全流程时长管控情况");
+
+    List<List<Map<String, Object>>> paramlist = new ArrayList<>();
+    for (int j = 0; j < 10; j++) {
+      List<Map<String, Object>> rlist = new ArrayList<>();
+
+      for (int i = 0; i < 5; i++) {
+        Map<String, Object> ma = new HashMap<>();
+        ma.put("COLUMN", UUID.randomUUID().toString());
+        rlist.add(ma);
+        //
+      }
+      paramlist.add(rlist);
+    }
+
+
+    XWPFTable table2 =
+        WorderToNewWordUtils.setTable(
+            map1,
+            document,
+            new String[][] {
+              new String[] {
+                "单位",
+                  "超过70 天少于120 天未送电数",
+                  "超过120 天少于300 天未送电数",
+                  "超过300 天未送电数",
+                  "超过70 天未送电合计数"
+              },
+            },
+            paramlist,
+            new String[] {"注：统计周期为报表当期。"});
     try {
 
       ServletOutputStream ServletOutputStream = response.getOutputStream();

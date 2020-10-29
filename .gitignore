@@ -11,6 +11,6 @@ buildNumber.properties
 **/.mvn/
 **/mvnw.cmd
 **/mvnw
-
+**/*.iml
 .mvn/wrapper/maven-wrapper.jar
-
+.idea

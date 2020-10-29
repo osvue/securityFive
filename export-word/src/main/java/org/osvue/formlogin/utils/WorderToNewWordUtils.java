@@ -88,6 +88,14 @@ public class WorderToNewWordUtils {
     }
   }
 
+  /**
+   *
+   * @param map
+   * @param document
+   * @param s
+   * @param testList  每一个元素就是一行row    List<Map<String, Object>>
+   * @return
+   */
   public static XWPFTable setTable(
       Map<String, Object> map,
       XWPFDocument document,
@@ -109,7 +117,8 @@ public class WorderToNewWordUtils {
       paragraph.addRun(r);
     }
 //创建表格的行数和列数
-    XWPFTable table = document.createTable(s.length + testList.size(), s[0].length);
+    int trow = s.length + testList.size();
+    XWPFTable table = document.createTable(trow, s[0].length);
     CTTbl ttbl = table.getCTTbl();
     CTTblPr tblPr = ttbl.getTblPr() == null ? ttbl.addNewTblPr() : ttbl.getTblPr();
     CTTblWidth tblWidth = tblPr.isSetTblW() ? tblPr.getTblW() : tblPr.addNewTblW();
@@ -118,7 +127,7 @@ public class WorderToNewWordUtils {
     tblWidth.setW(new BigInteger("8000"));
     tblWidth.setType(STTblWidth.DXA);
 
-    // 表格首航
+    // 表格第一行
     {
       for (int i = 0; i < s.length; i++) {
         XWPFTableRow row = table.getRow(i);
@@ -176,6 +185,15 @@ public class WorderToNewWordUtils {
     return table;
   }
 
+  /**
+   *
+   * @param map 表格标题
+   * @param document 文档对象
+   * @param s 表头
+   * @param testList 数据
+   * @param tts tts 为表格下的备注
+   * @return
+   */
   public static XWPFTable setTable(
       Map<String, Object> map,
       XWPFDocument document,
@@ -281,7 +299,7 @@ public class WorderToNewWordUtils {
   }
 
   private static void content(Map<String, Object> map, XWPFDocument document) {
-    Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+       final Pattern p = Pattern.compile("\\s*|\t|\r|\n");
     String s =
         p.matcher(map.get("content").toString())
             .replaceAll("")
@@ -381,7 +399,7 @@ public class WorderToNewWordUtils {
     }
   }
 
-  public static void main2(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException {
     XWPFDocument document = new XWPFDocument();
     InputStream is = null;
 
@@ -393,14 +411,20 @@ public class WorderToNewWordUtils {
             "1-3"
           },
           new String[] {"2-1", "2-2", "2-3"},
+            new String[] {"2adfgdsfgdfgdfgdsfgdsfgsdfgsdfgdfgsdfgsdfgsdfgdsfgdfsg-1", "2b-2", "2c-3"},
+            new String[] {"2tdf-1", "2-dfgdsfw2", "2-hd3"},
+            new String[] {"2e-1", "23-2", "2dfg-3"},
+            new String[] {"2w-1", "2d-2", "2dsgfdf-3"}
         };
 
     XWPFTable table = document.createTable();
 
+//    s.length 确定创建的行数
     for (int i = 0; i < s.length; i++) {
       XWPFTableRow row;
       if (i == 0) {
         row = table.getRow(0);
+//        二维确定列数
         for (int j = 0; j < s[i].length; j++) {
           XWPFTableCell cell;
           if (j == 0) {
@@ -425,7 +449,7 @@ public class WorderToNewWordUtils {
           CTTcPr cellPr = cttc.addNewTcPr();
           CTTblWidth cellw = cellPr.addNewTcW();
           cellw.setType(STTblWidth.NIL);
-          cellw.setW(BigInteger.valueOf(100));
+          cellw.setW(BigInteger.valueOf(1255));
 
           cell.setColor("CCCCCC");
 
@@ -446,7 +470,7 @@ public class WorderToNewWordUtils {
           XWPFParagraph p = cell.addParagraph();
           XWPFRun r1 = p.createRun();
           cell.getCTTc().addNewTcPr().addNewVAlign().setVal(STVerticalJc.CENTER);
-          ;
+
 
           CTTc cttc = cell.getCTTc();
           CTTcPr cellPr = cttc.addNewTcPr();
@@ -458,7 +482,7 @@ public class WorderToNewWordUtils {
         }
       }
     }
-
+//创建段落
     XWPFParagraph paragraph = document.createParagraph();
 
     XWPFRun r = paragraph.createRun();
@@ -481,7 +505,7 @@ public class WorderToNewWordUtils {
     XWPFParagraph p = table1.getRow(0).getCell(0).addParagraph();
     XWPFRun r1 = p.createRun();
     table1.getRow(0).getCell(0).getCTTc().addNewTcPr().addNewVAlign().setVal(STVerticalJc.CENTER);
-    ;
+
     r1.setText("1255wdfjskdfjlkasdflkasjflkasjfjaskdfjlsdflaslfasljdfl;");
     r1.addBreak();
     r1.addBreak();
@@ -493,7 +517,6 @@ public class WorderToNewWordUtils {
     XWPFParagraph p2 = table1.getRow(0).getCell(1).addParagraph();
     XWPFRun r21 = p2.createRun();
     table1.getRow(0).getCell(1).getCTTc().addNewTcPr().addNewVAlign().setVal(STVerticalJc.CENTER);
-    ;
     r21.setText("1255wdfjskdfjlkasdflkasjflkasjfjaskdfjlsdflaslfasljdfl;");
     r21.addBreak();
     r21.addBreak();
@@ -521,9 +544,7 @@ public class WorderToNewWordUtils {
      * cell.getCTTc().addNewTcPr().addNewVAlign().setVal(STVerticalJc.CENTER);;
      * r1.setText("12312424124"); r1.setFontFamily("宋体"); p.setAlignment(ParagraphAlignment.CENTER);
      */
-    FileOutputStream out =
-        new FileOutputStream(
-            "C:\\Users\\Administrator\\Desktop\\1.doc"); // true为进入追加模式，false为覆盖原有内容
+    FileOutputStream out = new FileOutputStream("D:\\temp"+File.separator+"1.docx", false); // true为进入追加模式，false为覆盖原有内容
     document.write(out);
   }
 
